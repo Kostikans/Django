@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NewsLine</title>
+    <link href="https://getbootstrap.com/docs/4.4/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container-fluid">
+    <div class="row my-2 offset-md-1">
+        <div class="col-6 my-2">
+           {% block content %}{% endblock content %}
+        </div>
+        <div class="col-4 my-3 offset-md-1">
+            {% include 'tags.html' %}
+        </div>
+    </div>
+</div>
+<div class="col offset-md-1">
+</div>
+
+</body>
+</html>

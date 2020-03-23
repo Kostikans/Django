@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+      <h1>
+                Registration
+            </h1>
+            <form>
+                <div class="form-group row-my-1">
+                    <label for="Login" class="col-sm-2 col-form-label">Login</label>
+                    <div class="col-sm-9">
+                        <input type="Login"  class="form-control" id="Login" >
+                    </div>
+                </div>
+                <div class="form-group row-my-1">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-9">
+                        <input type="email"  class="form-control" id="inputEmail3" >
+                    </div>
+                </div>
+                <div class="form-group row-my-1">
+                    <label for="NickName" class="col-sm-2 col-form-label">NickName</label>
+                    <div class="col-sm-9">
+                        <input type="NickName"  class="form-control" id="NickName" >
+                    </div>
+                </div>
+                <div class="form-group row-my-1">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" id="inputPassword" >
+                    </div>
+                </div>
+                <div class="form-group row-my-1">
+                    <label for="RepeatPassword" class="col-sm-2 col-form-label">RepeatPassword</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" id="RepeatPassword" >
+                    </div>
+                </div>
+            </form>
+            <div class="form-group row-my-1">
+                <label for="Avatar" class="col-sm-2 col-form-label">Avatar</label>
+                <div class="col-9">
+                    <div class="media">
+                        <img src="..." class="mr-3" alt="...">
+                        <div class="media-body">
+                        </div>
+                    </div>
+                    <div class="custom-file ">
+                        <input type="file" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+
+{% endblock content %}

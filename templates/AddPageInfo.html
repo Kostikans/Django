@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+     <h2>
+          <a href="{% url 'ask' %}" class="btn btn-primary active" role="button" aria-pressed="true">New Question</a>
+          <a href="" class="btn btn-primary active" role="button" aria-pressed="true">Hot Question</a>
+      </h2>
+            <div class="card mb-3" style="max-width: 740px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="https://i.picsum.photos/id/501/200/300.jpg" class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                            <p class="card-text"><small class="text-muted">Author: AuthorName</small></p>
+                        </div>
+                        <div class="card-footer bg-transparent text-muted">
+                            <div class="row-1">
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-danger">Dislike</button>
+                                        <button type="button" class="btn btn-secondary">1</button>
+                                        <button type="button" class="btn btn-success">Like</button>
+                                    </div>
+                                    <src class="tag tag-primary">Tag</src>
+                                    <span class="tag tag-primary">Tag</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <div class="row">
+                <div class="col-8">
+   {% for question in questions %}
+        {% include 'OneQuestion.html' with q=question %}
+    {% endfor %}
+                </div>
+    </div>
+    {% include 'Pager.html'  with page=questions%}
+{% endblock content %}
