@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import url
+
 from django.urls import path
 from WEB import views
 
-urlpatterns = [
+
+urlpatterns = (
     path('', views.MainPage, name='MainPage'),
     path('hot/', views.hot, name='Hot'),
     path('tag/', views.tag, name='tag'),
@@ -27,4 +29,4 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('ask/', views.ask, name='ask'),
     path('settings/', views.setting, name='settings'),
-]
+)

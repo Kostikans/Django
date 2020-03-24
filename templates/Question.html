@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
 
 {% block content %}
-      <h2>
-          <a href="" class="btn btn-primary active" role="button" aria-pressed="true">New Question</a>
-          <a href="" class="btn btn-primary active" role="button" aria-pressed="true">Hot Question</a>
-      </h2>
                 {% include 'OneQuestion.html' with q=question %}
 {% endblock content %}

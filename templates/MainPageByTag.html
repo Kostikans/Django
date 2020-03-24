@@ -8,5 +8,5 @@
       {% for question in questions %}
         {% include 'OneQuestion.html' with q=question %}
     {% endfor %}
-    {% include 'Pager.html' with page=questions%}
+    {% include 'Pager.html' with pages=questions %}
 {% endblock content %}

@@ -2,10 +2,10 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand">ASK ME</a>
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <a href="{% url 'MainPage'%}" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</a>
     <a class="navbar-brand ml-5">
         <form class="media">
-            <img src="https://i.picsum.photos/id/866/80/80.jpg" class="mr" alt="...">
+            <img src="{%  static 'WEB/img/Avatar.jpg' %}" class="mr" alt="...">
         </form>
     </a>
     <a class="navbar-brand mr-auto ">User Name</a>
