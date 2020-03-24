@@ -10,16 +10,16 @@ for i in range(1, 30):
 
 def paginate(objects_list, request):
     paginator = Paginator(objects_list, 4)
-    page = request.GET.get('page')
+    page_number = request.GET.get('page')
     try:
-        page_number = paginator.get_page(page)
+        page = paginator.get_page(page_number)
 
     except PageNotAnInteger:
-        page_number = paginator.page(1)
+        page = paginator.page(1)
 
     except EmptyPage:
-        page_number = paginator.page(paginator.num_pages)
-    return page_number
+        page = paginator.page(paginator.num_pages)
+    return page
 
 
 def MainPage(request):
