@@ -3,7 +3,7 @@
 {% block content %}
       <h2>
           <a href="{% url 'ask' %}" class="btn btn-primary active" role="button" aria-pressed="true">New Question</a>
-          <a href="" class="btn btn-primary active" role="button" aria-pressed="true">Hot Question</a>
+          <a href="{% url 'Hot' %}" class="btn btn-primary active" role="button" aria-pressed="true">Hot Question</a>
       </h2>
     {% for question in questions %}
         {% include 'OneQuestion.html' with q=question %}
