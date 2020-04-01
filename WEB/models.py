@@ -78,7 +78,7 @@ class Answer(models.Model):
     like = models.IntegerField(verbose_name="Answer_like", default=0)
 
     text = models.TextField(verbose_name='Текст ответа')
-    date_published = models.DateTimeField(verbose_name='Дата ответа', default=datetime.now(tz=timezone.utc))
+    create_date = models.DateTimeField(verbose_name='Дата ответа', default=datetime.now(tz=timezone.utc))
 
     is_correct = models.BooleanField(default=False)
 
