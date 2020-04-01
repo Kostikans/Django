@@ -15,7 +15,7 @@
            {% block content %}{% endblock content %}
         </div>
         <div class="col-4 my-3 offset-md-1">
-            {% include 'tags.html' %}
+            {% include 'tags.html' with bestTags=tags %}
         </div>
     </div>
 </div>

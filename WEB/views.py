@@ -4,15 +4,21 @@ from django.urls import path
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from WEB import models
-from WEB.models import Question, Tag, UserProfile
 
- # author = models.Author.objects.create(name='kek')
- # author.save()
- # models.Question.objects.create(author=author, title='kek', text='kek')
 
-questions = []
-for i in range(1, 30):
-    questions.append({'id': i, 'title': f'question # {i}'})
+# t = models.Tag(title='algorithm', count='9')
+# t.save()
+# ta = models.Tag(title='web', count='3')
+# ta.save()
+u = models.UserProfile.objects.get(pk=1)
+a = models.Answer(author=u, text='answer', like=3)
+# q = models.Question(author=u, text='texno', title='WithTags', like=1)
+q = models.Question.objects.get(pk=27)
+
+# q.save()
+# q.tags.add(t)
+# q.tags.add(ta)
+# q.save()
 
 
 def paginate(objects_list, request):
@@ -32,43 +38,46 @@ def paginate(objects_list, request):
 def MainPage(request):
     articles = models.Question.objects.all()
     paginated_data = paginate(articles, request)
-    return render(request, 'MainPage.html', paginated_data)
+    rendered_data = {"questions": paginated_data, "tags": models.Tag.objects.bestTags()}
+    return render(request, 'MainPage.html', rendered_data)
 
 
 def hot(request):
     articles = models.Question.objects.best_published()
     paginated_data = paginate(articles, request)
-    rendered_data = {"questions": paginated_data}
+    rendered_data = {"questions": paginated_data, "tags": models.Tag.objects.bestTags()}
 
-    return render(request, 'MainPage.html', {
-        rendered_data
-    })
+    return render(request, 'MainPage.html', rendered_data)
 
 
-def tag(request):
-    pagData = paginate(questions, request)
-    rendered_data = {"questions": pagData}
+def tag(request, tagid):
+    articles = models.Question.objects.by_tag(tagid)
+    paginated_data = paginate(articles, request)
+    rendered_data = {"questions": paginated_data, "tags": models.Tag.objects.bestTags()}
     return render(request, 'MainPageByTag.html', rendered_data)
 
 
 def question(request, qid):
-    question = questions[qid - 1]
-    return render(request, 'Question.html', {
-        'question': question
-    })
+    question = models.Question.objects.get(pk=qid)
+    answers = models.Answer.objects.by_question(qid)
+    paginated_data = paginate(answers, request)
+    rendered_data = {"question": question, "answers" : paginated_data, "tags": models.Tag.objects.bestTags()}
+    return render(request, 'AddPageInfo.html',
+        rendered_data
+    )
 
 
 def login(request):
-    return render(request, 'LoginPage.html', {})
+    return render(request, 'LoginPage.html', {"tags": models.Tag.objects.bestTags()})
 
 
 def signup(request):
-    return render(request, 'Registration.html', {})
+    return render(request, 'Registration.html', {"tags": models.Tag.objects.bestTags()})
 
 
 def ask(request):
-    return render(request, 'AddPage.html', {})
+    return render(request, 'AddPage.html', {"tags": models.Tag.objects.bestTags()})
 
 
 def setting(request):
-    return render(request, 'SettingsPage.html', {})
+    return render(request, 'SettingsPage.html', {"tags": models.Tag.objects.bestTags()})

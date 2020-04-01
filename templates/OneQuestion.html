@@ -8,19 +8,21 @@
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title"><a href = "{% url 'question' qid=q.id %}">{{ q.title }}</a></h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                <p class="card-text">{{ q.text }}</p>
                                 <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                                <p class="card-text"><small class="text-muted">Author: AuthorName</small></p>
+                                <p class="card-text"><small class="text-muted">created {{ q.create_date }}</small></p>
+                                <p class="card-text"><small class="text-muted">Author: {{q.author.name}}</small></p>
                             </div>
                             <div class="card-footer bg-transparent text-muted">
                                 <div class="row-1">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-danger">Dislike</button>
-                                        <button type="button" class="btn btn-secondary">1</button>
+                                        <button type="button" class="btn btn-secondary">{{ question.like }}</button>
                                         <button type="button" class="btn btn-success">Like</button>
                                     </div>
-                                    <src class="tag tag-primary">Tag</src>
-                                    <span class="tag tag-primary">Tag</span>
+                                      {% for tag in tags %}
+                                          <src class="tag tag-primary">{{ tag.title }}</src>
+                                      {% endfor %}
                                 </div>
                                 <div class="row-1 my-3">
                                     <a href = "{% url 'question' qid=q.id %}">Ответов(4)</a>

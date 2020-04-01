@@ -23,7 +23,7 @@ from WEB import views
 urlpatterns = (
     path('', views.MainPage, name='MainPage'),
     path('hot/', views.hot, name='Hot'),
-    path('tag/', views.tag, name='tag'),
+    path('tag/<str:tagid>/', views.tag, name='tag'),
     path('question/<int:qid>/', views.question, name='question'),
     path('login/', views.login, name='login'),
     path('signup/', views.signup, name='signup'),

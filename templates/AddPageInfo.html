@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% include 'OneQuestion.html' with q=question %}
+    {% include 'OneQuestion.html' with q=question tags=question.tags.all %}
     <div class="row">
                 <div class="col-8">
-   {% for question in questions %}
-        {% include 'Answer.html' with q=question %}
+   {% for anwer in answers %}
+        {% include 'Answer.html' with a=anwer %}
     {% endfor %}
                 </div>
     </div>
-    {% include 'Pager.html'  with pages=questions %}
+    {% include 'Pager.html'  with pages=answers %}
 {% endblock content %}
