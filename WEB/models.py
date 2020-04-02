@@ -1,12 +1,16 @@
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from datetime import datetime
 from django.conf import settings
 from django.utils import timezone
+from django.db.models import Sum
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=255, verbose_name=u"Имя", default="Texno")
+    name = models.CharField(max_length=255, verbose_name=u"Имя")
+    rating = models.IntegerField(verbose_name="Рейтинг", default=0)
 
     def __str__(self):
         return self.name
@@ -26,7 +30,7 @@ class TagManager(models.Manager):
 
 
 class Tag(models.Model):
-    title = models.CharField(max_length=120, verbose_name=u"Заголовок ярлыка", default="Texno")
+    title = models.CharField(max_length=120, verbose_name=u"Заголовок ярлыка", unique="True")
 
     count = models.IntegerField(verbose_name="Число упоминаний", default=0)
 
@@ -44,10 +48,42 @@ class QuestionManager(models.Manager):
         return self.filter(is_active=True, tags__title=tag)
 
 
-class Question(models.Model):
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+class LikeDislikeManager(models.Manager):
+    use_for_related_fields = True
 
-    title = models.CharField(max_length=120, verbose_name=u"Заголовок вопроса")
+    def likes(self):
+        return self.get_queryset().filter(vote__gt=0)
+
+    def dislikes(self):
+        return self.get_queryset().filter(vote__lt=0)
+
+    def sum_rating(self):
+        return self.get_queryset().aggregate(Sum('vote')).get('vote__sum') or 0
+
+
+class LikeDislike(models.Model):
+    LIKE = 1
+    DISLIKE = -1
+
+    VOTES = (
+        (DISLIKE, 'Dislike'),
+        (LIKE, 'Like')
+    )
+
+    vote = models.SmallIntegerField(verbose_name="Голос", choices=VOTES)
+    user = models.ForeignKey(UserProfile, verbose_name="Пользователь", on_delete=models.CASCADE)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
+
+    objects = LikeDislikeManager()
+
+
+class Question(models.Model):
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+
+    title = models.CharField(max_length=120, verbose_name=u"Заголовок вопроса", unique="True")
     text = models.TextField(verbose_name=u"Полное описание вопроса")
 
     create_date = models.DateTimeField(default=datetime.now, verbose_name=u"Время создания вопроса")
@@ -57,7 +93,7 @@ class Question(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     objects = QuestionManager()
 
-    like = models.IntegerField(verbose_name="Число лайков", default=0)
+    like = GenericRelation(LikeDislike, related_query_name='Question')
 
     def __str__(self):
         return self.title
@@ -66,23 +102,16 @@ class Question(models.Model):
         ordering = ['-create_date']
 
 
-class AnswerManager(models.Manager):
-    def by_question(self, id):
-        return self.filter(question=id)
-
-
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
-    like = models.IntegerField(verbose_name="Answer_like", default=0)
+    like = GenericRelation(LikeDislike, related_query_name='Answer')
 
     text = models.TextField(verbose_name='Текст ответа')
-    create_date = models.DateTimeField(verbose_name='Дата ответа', default=datetime.now(tz=timezone.utc))
+    create_date = models.DateTimeField(verbose_name='Дата ответа', default=datetime.now)
 
     is_correct = models.BooleanField(default=False)
-
-    objects = AnswerManager()
 
     def __str__(self):
         return self.text

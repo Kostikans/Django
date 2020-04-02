@@ -17,7 +17,7 @@
                                 <div class="row-1">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-danger">Dislike</button>
-                                        <button type="button" class="btn btn-secondary">{{ question.like }}</button>
+                                        <button type="button" class="btn btn-secondary">{{ question.like.count }}</button>
                                         <button type="button" class="btn btn-success">Like</button>
                                     </div>
                                       {% for tag in tags %}

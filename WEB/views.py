@@ -44,7 +44,7 @@ def tag(request, tagid):
 
 def question(request, qid):
     question = models.Question.objects.get(pk=qid)
-    answers = models.Answer.objects.by_question(qid)
+    answers = question.answer_set.all()
     paginated_data = paginate(answers, request)
     rendered_data = {"question": question, "answers": paginated_data, "tags": models.Tag.objects.bestTags()}
     return render(request, 'AddPageInfo.html', rendered_data)

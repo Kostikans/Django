@@ -2,8 +2,8 @@
 
 {% block content %}
       <h2>
-          <a href="{% url 'ask' %}" class="btn btn-primary active" role="button" aria-pressed="true">New Question</a>
-          <a href="{% url 'Hot' %}" class="btn btn-primary active" role="button" aria-pressed="true">Hot Question</a>
+          <a href="{% url 'MainPage' %}" class="btn btn-primary active" role="button" aria-pressed="true">News Questions</a>
+          <a href="{% url 'Hot' %}" class="btn btn-primary active" role="button" aria-pressed="true">Hot Questions</a>
       </h2>
     {% for question in questions %}
         {% include 'OneQuestion.html' with q=question tags=question.tags.all%}
