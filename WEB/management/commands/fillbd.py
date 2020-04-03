@@ -19,7 +19,8 @@ class Command(BaseCommand):
             u = models.UserProfile(username=f.name())
             u.save()
             author = models.Author(
-                rating=f.random_int(min=-100, max=100)
+                rating=f.random_int(min=-100, max=100),
+                name=f.name()
             )
             author.save()
 
@@ -37,14 +38,12 @@ class Command(BaseCommand):
                 author=choice(models.Author.objects.all()),
                 title=f.sentence()[:28],
                 text=f.sentence()[:46],
-                like=f.random_int(min=0, max=10)
             )
             q.save()
             for k in range(cnt):
                 answ = models.Answer(
                     text=f.sentence()[:46],
                     author=choice(models.Author.objects.all()),
-                    like=f.random_int(min=0, max=10)
                 )
                 answ.question = q
                 answ.save()
