@@ -12,46 +12,58 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--authors', type=int)
         parser.add_argument('--questions', type=int)
+        parser.add_argument('--answers', type=int)
         parser.add_argument('--tags', type=int)
 
     def fill_authors(self, cnt):
+        objs = list()
+        users = list()
         for i in range(cnt):
-            u = models.UserProfile(username=f.name())
-            u.save()
-            author = models.Author(
+            users.append(models.UserProfile(username=f.name()))
+            objs.append(models.Author(
                 rating=f.random_int(min=-100, max=100),
                 name=f.name()
-            )
-            author.save()
+            ))
+
+        models.UserProfile.objects.bulk_create(objs=users)
+        models.Author.objects.bulk_create(objs=objs)
 
     def fill_tags(self, cnt):
+        objs = list()
         for i in range(cnt):
-            tag = models.Tag(
+           objs.append(models.Tag(
                 title=f.sentence()[:128],
                 count=f.random_int(min=0, max=10)
-            )
-            tag.save()
+            ))
+        models.Tag.objects.bulk_create(objs=objs)
 
     def fill_questions(self, cnt):
+        objs = list()
         for i in range(cnt):
-            q = models.Question(
+            objs.append(models.Question(
                 author=choice(models.Author.objects.all()),
                 title=f.sentence()[:28],
                 text=f.sentence()[:46],
-            )
-            q.save()
-            for k in range(cnt):
-                answ = models.Answer(
-                    text=f.sentence()[:46],
-                    author=choice(models.Author.objects.all()),
-                )
-                answ.question = q
-                answ.save()
-            q.save()
-            q.tags.add(choice(models.Tag.objects.all()))
-            q.save()
+            ))
+        models.Question.objects.bulk_create(objs=objs)
+        objects = models.Question.objects.all()
+        for i in range(cnt):
+            objects[i].tags.add(choice(models.Tag.objects.all()))
+        models.Question.objects.update()
+
+    def fill_answers(self, cnt):
+        objs = list()
+        for i in range(cnt):
+            objs.append(models.Answer(
+                text=f.sentence()[:46],
+                author=choice(models.Author.objects.all())
+            ))
+            objs[i].question = choice(models.Question.objects.all())
+        models.Answer.objects.bulk_create(objs=objs)
+
 
     def handle(self, *args, **options):
         self.fill_authors(options.get('authors', 15))
         self.fill_tags(options.get('tags', 15))
         self.fill_questions(options.get('questions', 15))
+        self.fill_answers(options.get('answers', 15))
