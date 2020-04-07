@@ -39,26 +39,30 @@ class Command(BaseCommand):
 
     def fill_questions(self, cnt):
         objs = list()
+        authors = models.Author.objects.all()
         for i in range(cnt):
             objs.append(models.Question(
-                author=choice(models.Author.objects.all()),
+                author=choice(authors),
                 title=f.sentence()[:28],
                 text=f.sentence()[:46],
             ))
         models.Question.objects.bulk_create(objs=objs)
         objects = models.Question.objects.all()
+        tags = models.Tag.objects.all()
         for i in range(cnt):
-            objects[i].tags.add(choice(models.Tag.objects.all()))
+            objects[i].tags.add(choice(tags))
         models.Question.objects.update()
 
     def fill_answers(self, cnt):
         objs = list()
+        authors = models.Author.objects.all()
+        questions = models.Question.objects.all()
         for i in range(cnt):
             objs.append(models.Answer(
                 text=f.sentence()[:46],
-                author=choice(models.Author.objects.all())
+                author=choice(authors)
             ))
-            objs[i].question = choice(models.Question.objects.all())
+            objs[i].question = choice(questions)
         models.Answer.objects.bulk_create(objs=objs)
 
 

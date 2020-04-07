@@ -18,10 +18,9 @@ class Author(models.Model):
 
 class UserProfile(AbstractUser):
     avatar = models.ImageField(upload_to='uploads/%Y/%m/%d/')
-    name = models.CharField(max_length=255, verbose_name=u"Имя", default="NickName")
 
     def __str__(self):
-        return self.avatar, self.name
+        return self.avatar, self.username
 
 
 class TagManager(models.Manager):
