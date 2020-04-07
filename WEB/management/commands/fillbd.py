@@ -31,7 +31,7 @@ class Command(BaseCommand):
     def fill_tags(self, cnt):
         objs = list()
         for i in range(cnt):
-           objs.append(models.Tag(
+            objs.append(models.Tag(
                 title=f.sentence()[:128],
                 count=f.random_int(min=0, max=10)
             ))
@@ -39,32 +39,31 @@ class Command(BaseCommand):
 
     def fill_questions(self, cnt):
         objs = list()
-        authors = models.Author.objects.all()
+        authors = list(models.Author.objects.values_list('id', flat=True))
         for i in range(cnt):
             objs.append(models.Question(
-                author=choice(authors),
+                author_id=choice(authors),
                 title=f.sentence()[:28],
                 text=f.sentence()[:46],
             ))
         models.Question.objects.bulk_create(objs=objs)
         objects = models.Question.objects.all()
-        tags = models.Tag.objects.all()
+        tags = models.Tag.objects.values_list('id', flat=True)
         for i in range(cnt):
             objects[i].tags.add(choice(tags))
         models.Question.objects.update()
 
     def fill_answers(self, cnt):
         objs = list()
-        authors = models.Author.objects.all()
+        authors = models.Author.objects.values_list('id', flat=True)
         questions = models.Question.objects.all()
         for i in range(cnt):
             objs.append(models.Answer(
                 text=f.sentence()[:46],
-                author=choice(authors)
+                author_id=choice(authors)
             ))
             objs[i].question = choice(questions)
         models.Answer.objects.bulk_create(objs=objs)
-
 
     def handle(self, *args, **options):
         self.fill_authors(options.get('authors', 15))
