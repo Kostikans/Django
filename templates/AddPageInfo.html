@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 {% block content %}
     {% include 'OneQuestion.html' with q=question tags=question.tags.all %}
@@ -9,5 +10,13 @@
     {% endfor %}
                 </div>
     </div>
+    <form class="form"  method="POST">
+             {% csrf_token %}
+             {% bootstrap_form form %}
+              {% buttons %}
+                <button type="submit" class="btn btn-primary">Answer</button>
+            {% endbuttons %}
+    </form>
     {% include 'Pager.html'  with pages=answers %}
+
 {% endblock content %}

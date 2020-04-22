@@ -17,10 +17,13 @@ class Author(models.Model):
 
 
 class UserProfile(AbstractUser):
-    avatar = models.ImageField(upload_to='uploads/%Y/%m/%d/')
+    avatar = models.ImageField(upload_to='static/WEB/Img/', null=True, blank=True)
 
     def __str__(self):
-        return self.avatar, self.username
+        return self.username
+
+    class Meta:
+        verbose_name = 'Профиль'
 
 
 class TagManager(models.Manager):
@@ -36,7 +39,7 @@ class Tag(models.Model):
     objects = TagManager()
 
     def __str__(self):
-        return self.title, self.count
+        return self.title
 
 
 class QuestionManager(models.Manager):

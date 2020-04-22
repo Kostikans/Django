@@ -1,50 +1,16 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
 {% block content %}
       <h1>
-                Settings: accountName
+                Settings: {{user.username}}
             </h1>
-        <form>
-            <div class="form-group row-my-1">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-9">
-                    <input type="text"  class="form-control" id="staticEmail" >
-                </div>
-            </div>
-            <div class="form-group row-my-1">
-                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-9">
-                    <input type="password" class="form-control" id="inputPassword" >
-                </div>
-            </div>
-            <div class="form-group row-my-1">
-                <label for="NickName" class="col-sm-2 col-form-label">NickName</label>
-                <div class="col-sm-9">
-                    <input type="NickName"  class="form-control" id="NickName" >
-                </div>
-            </div>
-        </form>
-            <div class="form-group row-my-1">
-                <label for="Avatar" class="col-sm-2 col-form-label">Avatar</label>
-                <div class="col-9">
-                    <div class="media">
-                        <img src="..." class="mr-3" alt="...">
-                        <div class="media-body">
-                        </div>
-                    </div>
-                    <div class="custom-file ">
-                        <input type="file" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-5">
-                <div class="form-group">
-                    <button type="button" class="btn btn-primary">Submit</button>
-                </div>
-            </div>
-    {% for question in questions %}
-                {% include 'OneQuestion.html' %}
-            {% endfor %}
+         <form class="form"  method="POST" enctype="multipart/form-data">
+             {% csrf_token %}
+                 {% bootstrap_form form %}
+              {% buttons %}
+                <button type="submit" class="btn btn-primary">Apply</button>
+            {% endbuttons %}
+             </form>
+
 {% endblock content %}
 
