@@ -25,6 +25,7 @@ def paginate(objects_list, request):
 
 
 def MainPage(request):
+
     articles = models.Question.objects.all()
     paginated_data = paginate(articles, request)
     rendered_data = {"questions": paginated_data, "tags": models.Tag.objects.bestTags()}
@@ -48,6 +49,7 @@ def tag(request, tagid):
 
 def question(request, qid):
     author, created = models.UserProfile.objects.get_or_create(username=request.user.username)
+    print(author.avatar)
     if request.POST:
         form = forms.AnswerForm(Author=author, question_id=qid, data=request.POST)
         if form.is_valid():

@@ -9,7 +9,7 @@ from django.db.models import Sum
 
 
 class UserProfile(AbstractUser):
-    avatar = models.ImageField(upload_to='static/WEB/Img/', null=True, blank=True)
+    avatar = models.ImageField(upload_to='Img/', null=True, blank=True)
 
     def __str__(self):
         return self.username

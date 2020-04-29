@@ -15,12 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import url
-
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path
 from WEB import views
+from django.conf.urls import url, include
+from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
-
-urlpatterns = (
+urlpatterns = [
     path('', views.MainPage, name='MainPage'),
     path('hot/', views.hot, name='Hot'),
     path('tag/<str:tagid>/', views.tag, name='tag'),
@@ -30,4 +34,4 @@ urlpatterns = (
     path('ask/', views.ask, name='ask'),
     path('settings/', views.setting, name='settings'),
     path('logout/', views.log_out, name="logout"),
-)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
