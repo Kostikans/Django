@@ -47,7 +47,7 @@ def tag(request, tagid):
 
 
 def question(request, qid):
-    author, created = models.Author.objects.get_or_create(name=request.user.username)
+    author, created = models.UserProfile.objects.get_or_create(username=request.user.username)
     if request.POST:
         form = forms.AnswerForm(Author=author, question_id=qid, data=request.POST)
         if form.is_valid():
@@ -102,13 +102,13 @@ def signup(request):
 @login_required
 def ask(request):
     if request.method == "GET":
-        author, created = models.Author.objects.get_or_create(name=request.user.username)
+        author, created = models.UserProfile.objects.get_or_create(username=request.user.username)
         form = forms.QuestionForm(author)
         rendered_data = {"tags": models.Tag.objects.bestTags(), 'form': form}
         return render(request, 'AddPage.html', rendered_data)
     if request.method == "POST":
 
-        author, created = models.Author.objects.get_or_create(name=request.user.username)
+        author, created = models.UserProfile.objects.get_or_create(username=request.user.username)
         form = forms.QuestionForm(Author=author, data=request.POST)
         if form.is_valid():
             question = form.save()

@@ -8,14 +8,6 @@ from django.utils import timezone
 from django.db.models import Sum
 
 
-class Author(models.Model):
-    name = models.CharField(max_length=255, verbose_name=u"Имя")
-    rating = models.IntegerField(verbose_name="Рейтинг", default=0)
-
-    def __str__(self):
-        return self.name
-
-
 class UserProfile(AbstractUser):
     avatar = models.ImageField(upload_to='static/WEB/Img/', null=True, blank=True)
 
@@ -83,7 +75,7 @@ class LikeDislike(models.Model):
 
 
 class Question(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=120, verbose_name=u"Заголовок вопроса", unique="True")
     text = models.TextField(verbose_name=u"Полное описание вопроса")
@@ -106,7 +98,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
     like = GenericRelation(LikeDislike, related_query_name='Answer')
 

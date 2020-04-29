@@ -20,13 +20,11 @@ class Command(BaseCommand):
         users = list()
         for i in range(cnt):
             users.append(models.UserProfile(username=f.name()))
-            objs.append(models.Author(
-                rating=f.random_int(min=-100, max=100),
-                name=f.name()
-            ))
-
+            print(i)
+            if i % 1000 == 0 and i != 0:
+                models.UserProfile.objects.bulk_create(objs=users)
+                users.clear()
         models.UserProfile.objects.bulk_create(objs=users)
-        models.Author.objects.bulk_create(objs=objs)
 
     def fill_tags(self, cnt):
         objs = list()
@@ -35,34 +33,48 @@ class Command(BaseCommand):
                 title=f.sentence()[:128],
                 count=f.random_int(min=0, max=10)
             ))
+            if i % 1000 == 0 and i != 0:
+                models.Tag.objects.bulk_create(objs=objs)
+                objs.clear()
         models.Tag.objects.bulk_create(objs=objs)
 
     def fill_questions(self, cnt):
         objs = list()
-        authors = list(models.Author.objects.values_list('id', flat=True))
+        authors_ids = list(models.UserProfile.objects.values_list('id', flat=True))
         for i in range(cnt):
             objs.append(models.Question(
-                author_id=choice(authors),
+                author_id=choice(authors_ids),
                 title=f.sentence()[:28],
                 text=f.sentence()[:46],
             ))
+            if i % 1000 == 0 and i != 0:
+                models.Question.objects.bulk_create(objs=objs)
+                objs.clear()
+
         models.Question.objects.bulk_create(objs=objs)
         objects = models.Question.objects.all()
-        tags = models.Tag.objects.values_list('id', flat=True)
+        tags_ids = models.Tag.objects.values_list('id', flat=True)
         for i in range(cnt):
-            objects[i].tags.add(choice(tags))
+            objects[i].tags.add(choice(tags_ids))
         models.Question.objects.update()
 
     def fill_answers(self, cnt):
         objs = list()
-        authors = models.Author.objects.values_list('id', flat=True)
-        questions = models.Question.objects.all()
+        authors_ids = models.UserProfile.objects.values_list('id', flat=True)
+        questions_ids = models.Question.objects.values_list('id', flat=True)
+        counter = 0
         for i in range(cnt):
             objs.append(models.Answer(
                 text=f.sentence()[:46],
-                author_id=choice(authors)
+                author_id=choice(authors_ids)
             ))
-            objs[i].question = choice(questions)
+            id = choice(questions_ids)
+            objs[counter].question = models.Question.objects.get(pk=id)
+            counter += 1
+            if i % 1000 == 0 and i != 0:
+                models.Answer.objects.bulk_create(objs=objs)
+                objs.clear()
+                counter = 0
         models.Answer.objects.bulk_create(objs=objs)
 
     def handle(self, *args, **options):
